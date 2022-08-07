@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aaa</title>
+</head>
+<style>
+</style>
+<body>
+<input type="file" id="file">
+</body>
+<script>
+    const reader=new FileReader;
+    function csvToArray(str, delimiter = ",") {
+        str = str.replace(/^\s+/,"");
+        const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+        const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+        const arr = rows.map(function (row) {
+            const values = row.split(delimiter);
+            const el = headers.reduce(function (object, header, index) {
+                object[header] = values[index];
+                return object;
+            }, {});
+        return el;
+        });
+    return arr;
+    }
+
+    document.getElementById('file').addEventListener('change',(event)=>{
+        const a = event.target.files[0];
+        console.log(a);
+        reader.readAsText(a);
+        reader.addEventListener('load',(event)=>{
+            const data = csvToArray(event.target.result);
+            console.log(data);
+        })
+    })
+</script>
+</html>
